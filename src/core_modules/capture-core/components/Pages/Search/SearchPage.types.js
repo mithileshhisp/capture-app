@@ -1,5 +1,5 @@
 // @flow
-import RenderFoundation from '../../../metaData/RenderFoundation/RenderFoundation';
+import { RenderFoundation } from '../../../metaData';
 
 export type OwnProps = {|
   +classes: {|
@@ -60,4 +60,3 @@ export type Props = {|
   ...DispatchersFromRedux,
   ...PropsFromRedux
 |}
-
