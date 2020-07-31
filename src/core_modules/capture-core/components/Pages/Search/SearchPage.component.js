@@ -14,7 +14,7 @@ import {
     ModalActions,
     ButtonStrip,
     Button,
-} from '@dhis2/ui-core';
+} from '@dhis2/ui';
 import { LockedSelector } from '../../LockedSelector';
 import type {
     AvailableSearchOptions,

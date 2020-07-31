@@ -2,7 +2,7 @@
 import React from 'react';
 import i18n from '@dhis2/d2-i18n';
 import { Pagination } from 'capture-ui';
-import { Button } from '@dhis2/ui-core';
+import { Button } from '@dhis2/ui';
 import CardList from '../../../CardList/CardList.component';
 import withNavigation from '../../../Pagination/withDefaultNavigation';
 import { searchScopes } from '../SearchPage.component';

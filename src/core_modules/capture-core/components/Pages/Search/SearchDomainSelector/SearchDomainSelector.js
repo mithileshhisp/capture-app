@@ -6,7 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import {
     SingleSelect,
     SingleSelectOption,
-} from '@dhis2/ui-core';
+} from '@dhis2/ui';
 import { Section, SectionHeaderSimple } from '../../../Section';
 import type { OwnProps, Props } from './SearchDomainSelector.types';
 

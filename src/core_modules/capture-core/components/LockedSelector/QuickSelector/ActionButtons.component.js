@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import i18n from '@dhis2/d2-i18n';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
-import { Button } from '@dhis2/ui-core';
+import { Button } from '@dhis2/ui';
 import { TrackerProgram } from '../../../metaData';
 
 const styles = () => ({

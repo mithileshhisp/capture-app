@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
-import { HeaderBar } from '@dhis2/ui-widgets';
+import { HeaderBar } from '@dhis2/ui';
 import { withStyles } from '@material-ui/core/styles';
 import NetworkStatusBadge from 'capture-core/components/NetworkStatusBadge/NetworkStatusBadge.component';
 
