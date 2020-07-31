@@ -1,7 +1,7 @@
 // @flow
 import React, { useEffect, useMemo, useState } from 'react';
 import i18n from '@dhis2/d2-i18n';
-import { Button } from '@dhis2/ui-core';
+import { Button } from '@dhis2/ui';
 import Form from '../../../D2Form/D2Form.component';
 import { searchScopes } from '../SearchPage.component';
 import { Section, SectionHeaderSimple } from '../../../Section';

@@ -9,10 +9,7 @@ export type SearchGroup = Array<{|
   +minAttributesRequiredToSearch: number
 |}>
 
-export type SelectedSearchScope = $ReadOnly<{|
-  value: ?string,
-  label: ?string
-|}>
+export type SelectedSearchScopeId = string
 
 export type AvailableSearchOptions = $ReadOnly<{
     [elementId: string]: {|

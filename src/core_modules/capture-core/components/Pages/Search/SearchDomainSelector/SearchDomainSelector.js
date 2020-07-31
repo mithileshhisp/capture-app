@@ -37,7 +37,7 @@ const styles = (theme: Theme) => ({
 });
 
 const Index =
-  ({ trackedEntityTypesWithCorrelatedPrograms, classes, onSelect, selectedProgram }: Props) =>
+  ({ trackedEntityTypesWithCorrelatedPrograms, classes, onSelect, selectedSearchScopeId }: Props) =>
       (<Section
           className={classes.searchDomainSelectorSection}
           header={
@@ -52,7 +52,7 @@ const Index =
               <div className={classes.searchRowSelectElement} style={{ marginRight: 8 }}>
                   <SingleSelect
                       onChange={({ selected }) => { onSelect(selected); }}
-                      selected={selectedProgram}
+                      selected={selectedSearchScopeId}
                       empty={<div className={classes.customEmpty}>Custom empty component</div>}
                   >
                       {

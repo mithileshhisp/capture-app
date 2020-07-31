@@ -18,7 +18,7 @@ import {
 import { LockedSelector } from '../../LockedSelector';
 import type {
     AvailableSearchOptions,
-    SelectedSearchScope,
+    SelectedSearchScopeId,
     Props,
     TrackedEntityTypesWithCorrelatedPrograms,
 } from './SearchPage.types';
@@ -164,30 +164,27 @@ const Index = ({ classes }: Props) => {
     const generalPurposeErrorMessage: string =
       useSelector(({ searchPage }) => searchPage.generalPurposeErrorMessage, isEqual);
 
-    const preselectedProgram: SelectedSearchScope =
+    const preselectedProgramId: SelectedSearchScopeId =
       useSelector(({ currentSelections }) => {
           const preselected = Object.values(trackedEntityTypesWithCorrelatedPrograms)
               // $FlowFixMe https://github.com/facebook/flow/issues/2221
               .map(({ programs }) => programs.find(({ programId }) => programId === currentSelections.programId))
               .filter(program => program)[0];
-          return {
-              value: preselected && preselected.programId,
-              label: preselected && preselected.programName,
-          };
+          return preselected.programId;
       }, isEqual);
 
-    const [selectedSearchScope, setSelectedSearchScope] = useState(preselectedProgram);
+    const [selectedSearchScopeId, setSelectedSearchScope] = useState(preselectedProgramId);
 
     const searchGroupForSelectedScope =
-      (selectedSearchScope.value ? searchOptions[selectedSearchScope.value].searchGroups : []);
+      (selectedSearchScopeId ? searchOptions[selectedSearchScopeId].searchGroups : []);
 
     useEffect(() => {
-        if (!preselectedProgram.value) {
+        if (!preselectedProgramId) {
             dispatchShowInitialSearchPage();
         }
     },
     [
-        preselectedProgram.value,
+        preselectedProgramId,
         dispatchShowInitialSearchPage,
     ]);
 
@@ -200,8 +197,8 @@ const Index = ({ classes }: Props) => {
 
         // in order for the Form component to render
         // a formId under the `forms` reducer needs to be added.
-        selectedSearchScope.value &&
-          JSON.parse(stringifyScopes)[selectedSearchScope.value].searchGroups
+        selectedSearchScopeId &&
+          JSON.parse(stringifyScopes)[selectedSearchScopeId].searchGroups
               .forEach(({ formId }) => {
                   dispatchAddFormIdToReduxStore(formId);
               });
@@ -209,12 +206,12 @@ const Index = ({ classes }: Props) => {
     [
         dispatch,
         stringifyScopes,
-        selectedSearchScope.value,
+        selectedSearchScopeId,
     ]);
 
-    const handleProgramSelection = ({ value, label }) => {
+    const handleProgramSelection = (scopeId) => {
         dispatchShowInitialSearchPage();
-        setSelectedSearchScope({ value, label });
+        setSelectedSearchScope(scopeId);
     };
 
     return (<>
@@ -234,11 +231,11 @@ const Index = ({ classes }: Props) => {
                 <SearchDomainSelector
                     trackedEntityTypesWithCorrelatedPrograms={trackedEntityTypesWithCorrelatedPrograms}
                     onSelect={handleProgramSelection}
-                    selectedProgram={selectedSearchScope}
+                    selectedSearchScopeId={selectedSearchScopeId}
                 />
 
                 <SearchForm
-                    selectedSearchScopeId={selectedSearchScope.value}
+                    selectedSearchScopeId={selectedSearchScopeId}
                     searchGroupForSelectedScope={searchGroupForSelectedScope}
                 />
 
@@ -287,7 +284,7 @@ const Index = ({ classes }: Props) => {
             </Paper>
 
             {
-                searchStatus === searchPageStatus.INITIAL && !selectedSearchScope.value &&
+                searchStatus === searchPageStatus.INITIAL && !selectedSearchScopeId &&
                     <Paper elevation={0} data-test={'dhis2-capture-informative-paper'}>
                         <div className={classes.emptySelectionPaperContent}>
                             {i18n.t('Make a selection to start searching')}
