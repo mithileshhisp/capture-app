@@ -146,6 +146,6 @@
     ]
   },
   "peerDependencies": {
-    "styled-jsx": "3.3"
+    "styled-jsx": "^3.3.0"
   }
 }

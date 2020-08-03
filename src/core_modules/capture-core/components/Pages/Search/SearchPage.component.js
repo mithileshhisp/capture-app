@@ -16,7 +16,7 @@ import {
 import { LockedSelector } from '../../LockedSelector';
 import type {
     AvailableSearchOptions,
-    SelectedSearchScope,
+    SelectedSearchScopeId,
     Props,
     TrackedEntityTypesWithCorrelatedPrograms,
 } from './SearchPage.types';
@@ -150,7 +150,7 @@ const useSearchOptions = (trackedEntityTypesWithCorrelatedPrograms): AvailableSe
     [trackedEntityTypesWithCorrelatedPrograms],
     );
 
-const usePreselectedSearchScope = (trackedEntityTypesWithCorrelatedPrograms): SelectedSearchScope => {
+const usePreselectedSearchScopeId = (trackedEntityTypesWithCorrelatedPrograms): SelectedSearchScopeId => {
     const currentSelectionsId =
       useSelector(({ currentSelections }) => currentSelections.programId, isEqual);
 
@@ -174,14 +174,14 @@ export const SearchPageComponent = ({ classes }: Props) => {
 
     const trackedEntityTypesWithCorrelatedPrograms = useTrackedEntityTypesWithCorrelatedPrograms();
     const availableSearchOptions = useSearchOptions(trackedEntityTypesWithCorrelatedPrograms);
-    const preselectedProgram = usePreselectedSearchScope(trackedEntityTypesWithCorrelatedPrograms);
+    const preselectedProgramId = usePreselectedSearchScopeId(trackedEntityTypesWithCorrelatedPrograms);
 
     const searchStatus: string =
       useSelector(({ searchPage }) => searchPage.searchStatus, isEqual);
 
     const generalPurposeErrorMessage: string =
       useSelector(({ searchPage }) => searchPage.generalPurposeErrorMessage, isEqual);
-    const [selectedSearchScope, setSelectedSearchScope] = useState(() => preselectedProgram);
+    const [selectedSearchScopeId, setSelectedSearchScopeId] = useState(preselectedProgramId);
 
 
     useEffect(() => {
@@ -199,24 +199,24 @@ export const SearchPageComponent = ({ classes }: Props) => {
 
         // in order for the Form component to render
         // a formId under the `forms` reducer needs to be added.
-        selectedSearchScope.value &&
-        availableSearchOptions[selectedSearchScope.value].searchGroups
-            .forEach(({ formId }) => {
-                dispatchAddFormIdToReduxStore(formId);
-            });
+        selectedSearchScopeId &&
+            availableSearchOptions[selectedSearchScopeId].searchGroups
+                .forEach(({ formId }) => {
+                    dispatchAddFormIdToReduxStore(formId);
+                });
     },
     [
         availableSearchOptions,
-        selectedSearchScope.value,
+        selectedSearchScopeId,
         dispatch,
     ]);
 
     const searchGroupForSelectedScope =
-      (selectedSearchScope.value ? availableSearchOptions[selectedSearchScope.value].searchGroups : []);
+      (selectedSearchScopeId ? availableSearchOptions[selectedSearchScopeId].searchGroups : []);
 
-    const handleSearchScopeSelection = ({ value, label }) => {
+    const handleSearchScopeSelection = (id) => {
         dispatchShowInitialSearchPage();
-        setSelectedSearchScope({ value, label });
+        setSelectedSearchScopeId(id);
     };
 
     return (<>
@@ -236,7 +236,7 @@ export const SearchPageComponent = ({ classes }: Props) => {
                 <SearchDomainSelector
                     trackedEntityTypesWithCorrelatedPrograms={trackedEntityTypesWithCorrelatedPrograms}
                     onSelect={handleSearchScopeSelection}
-                    selectedSearchScope={selectedSearchScope}
+                    selectedSearchScopeId={selectedSearchScopeId}
                 />
 
                 <SearchForm
