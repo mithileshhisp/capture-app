@@ -211,6 +211,8 @@ export const SearchPageComponent = ({ classes }: Props) => {
         dispatch,
     ]);
 
+    const searchGroupForSelectedScope =
+      (selectedSearchScope.value ? availableSearchOptions[selectedSearchScope.value].searchGroups : []);
 
     const handleSearchScopeSelection = (program) => {
         dispatchShowInitialSearchPage();
@@ -234,7 +236,7 @@ export const SearchPageComponent = ({ classes }: Props) => {
                 <SearchDomainSelector
                     trackedEntityTypesWithCorrelatedPrograms={trackedEntityTypesWithCorrelatedPrograms}
                     onSelect={handleSearchScopeSelection}
-                    selectedProgram={selectedSearchScope}
+                    selectedSearchScope={selectedSearchScope}
                 />
 
                 <SearchForm
@@ -297,4 +299,3 @@ export const SearchPageComponent = ({ classes }: Props) => {
         </div>
     </>);
 };
-
