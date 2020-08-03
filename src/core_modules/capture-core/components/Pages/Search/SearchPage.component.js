@@ -150,7 +150,7 @@ const useSearchOptions = (trackedEntityTypesWithCorrelatedPrograms): AvailableSe
     [trackedEntityTypesWithCorrelatedPrograms],
     );
 
-const usePreselectedProgram = (trackedEntityTypesWithCorrelatedPrograms) => {
+const usePreselectedProgramId = (trackedEntityTypesWithCorrelatedPrograms): SelectedSearchScopeId => {
     const currentSelectionsId =
       useSelector(({ currentSelections }) => currentSelections.programId, isEqual);
 
@@ -160,10 +160,7 @@ const usePreselectedProgram = (trackedEntityTypesWithCorrelatedPrograms) => {
             .map(({ programs }) =>
                 programs.find(({ programId }) => programId === currentSelectionsId))
             .filter(program => program)[0];
-        return {
-            value: preselection && preselection.programId,
-            label: preselection && preselection.programName,
-        };
+        return preselection && preselection.programId;
     }, [currentSelectionsId, trackedEntityTypesWithCorrelatedPrograms],
     );
 };
@@ -177,7 +174,7 @@ export const SearchPageComponent = ({ classes }: Props) => {
 
     const trackedEntityTypesWithCorrelatedPrograms = useTrackedEntityTypesWithCorrelatedPrograms();
     const availableSearchOptions = useSearchOptions(trackedEntityTypesWithCorrelatedPrograms);
-    const preselectedProgram = usePreselectedProgram(trackedEntityTypesWithCorrelatedPrograms);
+    const preselectedProgramId = usePreselectedProgramId(trackedEntityTypesWithCorrelatedPrograms);
 
     const searchStatus: string =
       useSelector(({ searchPage }) => searchPage.searchStatus, isEqual);
@@ -214,10 +211,6 @@ export const SearchPageComponent = ({ classes }: Props) => {
         dispatch,
     ]);
 
-    const handleProgramSelection = (scopeId) => {
-        dispatchShowInitialSearchPage();
-        setSelectedSearchScope(scopeId);
-    };
 
     const handleSearchScopeSelection = (program) => {
         dispatchShowInitialSearchPage();
@@ -305,9 +298,3 @@ export const SearchPageComponent = ({ classes }: Props) => {
     </>);
 };
 
-
-    const error: boolean = useSelector(({ activePage }) => activePage.selectionsError && activePage.selectionsError.error, isEqual);
-    const ready: boolean = useSelector(({ activePage }) => !activePage.isLoading, isEqual);
-
-    return <Composed {...props} error={error} ready={ready} />;
-};
