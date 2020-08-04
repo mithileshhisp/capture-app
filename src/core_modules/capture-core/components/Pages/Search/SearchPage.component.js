@@ -3,7 +3,7 @@ import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import i18n from '@dhis2/d2-i18n';
 import Paper from '@material-ui/core/Paper/Paper';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
 import {
     Modal,
@@ -165,8 +165,7 @@ const usePreselectedSearchScopeId = (trackedEntityTypesWithCorrelatedPrograms): 
     );
 };
 
-export const SearchPageComponent = ({ classes }: Props) => {
-    const dispatch = useDispatch();
+export const SearchPageComponent = ({ classes, dispatch }: Props) => {
     const dispatchShowInitialSearchPage = useCallback(
         () => { dispatch(showInitialViewOnSearchPage()); },
         [dispatch]);
@@ -194,25 +193,23 @@ export const SearchPageComponent = ({ classes }: Props) => {
         dispatchShowInitialSearchPage,
     ]);
 
+    const searchGroupForSelectedScope =
+      (selectedSearchScopeId ? availableSearchOptions[selectedSearchScopeId].searchGroups : []);
+
     useEffect(() => {
         const dispatchAddFormIdToReduxStore = (formId) => { dispatch(addFormData(formId)); };
 
         // in order for the Form component to render
         // a formId under the `forms` reducer needs to be added.
-        selectedSearchScopeId &&
-            availableSearchOptions[selectedSearchScopeId].searchGroups
-                .forEach(({ formId }) => {
-                    dispatchAddFormIdToReduxStore(formId);
-                });
+        searchGroupForSelectedScope
+            .forEach(({ formId }) => {
+                dispatchAddFormIdToReduxStore(formId);
+            });
     },
     [
-        availableSearchOptions,
-        selectedSearchScopeId,
+        searchGroupForSelectedScope,
         dispatch,
     ]);
-
-    const searchGroupForSelectedScope =
-      (selectedSearchScopeId ? availableSearchOptions[selectedSearchScopeId].searchGroups : []);
 
     const handleSearchScopeSelection = (id) => {
         dispatchShowInitialSearchPage();
